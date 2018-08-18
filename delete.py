@@ -11,7 +11,9 @@ Course work:
 Source:
     
 '''
+import sqlite3
 import psycopg2
+import random
 
 hostname = 'localhost'
 username = 'postgres'
@@ -24,23 +26,25 @@ def start():
     :param conn: the Connection object
     :return:
     """    
+    
     conn = psycopg2.connect( host=hostname, user=username, password=password, dbname=database )
     
-    rows = None
+    cur = conn.cursor()
+    
+    deleted_rows = -1
     try:
-        cur = conn.cursor()
-
-        cur.execute( "SELECT * FROM CITY" )
+        cur.execute("DELETE FROM CITY WHERE ID = %s", ('1'))
         
-        rows = cur.fetchall()
+        # get the number of updated rows
+        deleted_rows = cur.rowcount   
+             
+        print('deleted row : '+str(deleted_rows))
+    except psycopg2.IntegrityError as err:
+        print("error : {0}".format(sqle))
+    finally:
+        conn.commit()
     
-    except Error as e:
-        print(e)
-    
-    
-    for row in rows :
-        print(row)        
+    print('created id : '+str(deleted_rows))
 
-        
 if __name__ == '__main__':
     start()        

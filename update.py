@@ -11,7 +11,9 @@ Course work:
 Source:
     
 '''
+import sqlite3
 import psycopg2
+import random
 
 hostname = 'localhost'
 username = 'postgres'
@@ -24,23 +26,25 @@ def start():
     :param conn: the Connection object
     :return:
     """    
+    
     conn = psycopg2.connect( host=hostname, user=username, password=password, dbname=database )
     
-    rows = None
+    cur = conn.cursor()
+    
+    updated_rows = -1
     try:
-        cur = conn.cursor()
-
-        cur.execute( "SELECT * FROM CITY" )
+        cur.execute("UPDATE CITY SET NAME = %s, STATE = %s WHERE ID = %s", ('Montreal', 'QC', '15'))
         
-        rows = cur.fetchall()
+        # get the number of updated rows
+        updated_rows = cur.rowcount   
+             
+        print('updated row : '+str(updated_rows))
+    except psycopg2.IntegrityError as err:
+        print("error : {0}".format(sqle))
+    finally:
+        conn.commit()
     
-    except Error as e:
-        print(e)
-    
-    
-    for row in rows :
-        print(row)        
+    print('update rows : '+str(updated_rows))
 
-        
 if __name__ == '__main__':
     start()        
