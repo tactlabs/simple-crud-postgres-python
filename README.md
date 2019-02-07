@@ -1,3 +1,5 @@
+[![HitCount](http://hits.dwyl.io/teamtact/https://github.com/teamtact/simple-crud-postgres-python.svg)](http://hits.dwyl.io/teamtact/https://github.com/teamtact/simple-crud-postgres-python)
+
 # Simple CRUD PostgreSQL Python
 
 <pre>
